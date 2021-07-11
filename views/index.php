@@ -17,7 +17,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="form" id='weatherForm'>
+            <form action="/weather/get" method='POST'>
                 <div class="form-group mb-3">
                     <label for="city"> Укажите название города </label>
                     <input type="text" class='form-control' name='city' placeholder='Москва'>
@@ -29,8 +29,8 @@
                         <option value="xml"> XML </option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary" id='getWeather'> Получить </button>
-            </div>
+                <button type="submit" class="btn btn-primary"> Получить </button>
+            </form>
         </div>
     </div>
 

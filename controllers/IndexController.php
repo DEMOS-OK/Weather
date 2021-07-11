@@ -9,7 +9,7 @@ class IndexController extends Controller
 {
 
     /**
-     * Страница не найдена. Загружает представление 404 ошибки
+     * Главная страница
      */
     public function index()
     {

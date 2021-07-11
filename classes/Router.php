@@ -27,11 +27,16 @@ class Router
 
     /**
      * Конструктор маршрутизатора
-     * @param string $controllerName
-     * @param string $actionName
      */
-    public function __construct($controllerName, $actionName)
+    public function __construct()
     {
+        //Получение имени контроллера и его экшена
+        $defaultController = RouterConfig::get('default_controller');
+        $defaultAction = RouterConfig::get('default_action');
+        $controllerName = isset($_GET['controller']) ? ucfirst($_GET['controller']) : $defaultController;
+        $actionName = isset($_GET['action']) ? strtolower($_GET['action']) : $defaultAction;
+        
+        //Присваивание свойств
         $this->controllerFile = $this->getControllerFile($controllerName);
         $this->controllerClass = $controllerName;
         $this->actionName = $actionName;

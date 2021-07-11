@@ -41,7 +41,7 @@ function dd($value = null, $die = 1)
  */
 function redirect($url = '')
 {
-    header("Location: {$_SERVER['HTTP_HOST']}/{$url}/");
+    header("Location: {$url}");
 }
 
 /**

@@ -5,8 +5,9 @@ namespace controllers;
 /**
  * Базовый контроллер
  */
-abstract class Controller
+class Controller
 {
+
     /**
      * Оборачивает указанное представление хедером сверху и футером снизу
      * @param string $view
@@ -16,5 +17,7 @@ abstract class Controller
         view('header');
         view($view);
         view('footer');
+        exit;
     }
+
 }
