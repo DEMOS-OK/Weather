@@ -6,6 +6,8 @@
 
 //Подключение необходимых компонентов
 use config\PathConfig;
+use config\FileConfig;
+
 
 /**
  * Функция-отладчик, выводит 
@@ -31,4 +33,32 @@ function dd($value = null, $die = 1)
     echo "</pre>";
 
     if ($die) die;
+}
+
+/**
+ * Перенаправляет на указанную страницу
+ * @param string $url
+ */
+function redirect($url = '')
+{
+    header("Location: {$_SERVER['HTTP_HOST']}/{$url}/");
+}
+
+/**
+ * Загружает указанное представление
+ * @param string $name
+ */
+function view($name)
+{
+    //Формирование пути к представлению
+    $dir = PathConfig::get('views_dir');
+    $ext = FileConfig::get('views_ext');
+    $path = "{$_SERVER['DOCUMENT_ROOT']}{$dir}/{$name}{$ext}";
+
+    //Если такого файла нет, то грузим 404
+    if (!file_exists($path)) {
+        $path = "{$_SERVER['DOCUMENT_ROOT']}{$dir}/404{$ext}";
+    }
+
+    require_once $path;
 }

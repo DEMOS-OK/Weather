@@ -4,6 +4,7 @@ namespace classes;
 
 use config\FileConfig;
 use config\PathConfig;
+use config\RouterConfig;
 
 /**
  * Класс-маршрутизатор, определяет какой контроллер и метод
@@ -12,10 +13,10 @@ use config\PathConfig;
 class Router
 {
     /**
-     * Имя контроллера
-     * @var string $controllerName
+     * Название файла контроллера
+     * @var string $controllerFile
      */
-    private $controllerName;
+    private $controllerFile;
 
 
     /**
@@ -41,35 +42,43 @@ class Router
      */
     public function run()
     {
-        //Получение полного пути к контроллеру
-        $controllerPath = $this->getControllerPath();
+        //Получение полного пути к контроллеру, названия файла, экшена
+        $controllerPath = $this->getControllerPath($this->controllerFile);
+        $controllerFile = $this->controllerFile;
+        $action = $this->actionName;
 
-        if (file_exists($controllerPath)) {
-            require_once $controllerPath;
+        //Если такого контроллера нет, то вызываем контроллер ошибок
+        if (!file_exists($controllerPath)) {
+            $controllerFile = RouterConfig::get('error_controller');
+            $controllerPath = $this->getControllerPath($controllerFile);
+            $action = 'pageNotFound';
+        } 
 
-            $controller = new $this->controllerClass;
-            $action = $this->actionName;
+        //Подключение нужного контроллера
+        require_once $controllerPath;
 
-            $controller->$action();
-        } else {
-            dd('error');
-        }
+        //Создание объекта и вызов соответствующего метода
+        $controllerClass = $this->getControllerClass($controllerFile);
+        $controller = new $controllerClass;
+        $controller->$action();
     }
 
     /**
      * Получает полный путь к контроллеру
+     * @param string $controllerFile
+     * @return string
      */
-    private function getControllerPath()
+    private function getControllerPath($controllerFile)
     {
         //Формирование пути к контроллеру
         $dir = PathConfig::get('controllers_dir');
-        $path = $_SERVER['DOCUMENT_ROOT'] . $dir . $this->controllerFile;
+        $path = $dir . $controllerFile;
 
         return $path;
     }
 
     /**
-     * Получает имя файла контроллера по имени контроллера
+     * Получает имя файла по имени контроллера
      * @param string $name
      * @return string
      */
@@ -81,5 +90,18 @@ class Router
         $file = $name . $postfix . $extension;
 
         return $file;
+    }
+
+    /**
+     * Получает полное имя класса по названию файла
+     * @param string $file
+     * @return string
+     */
+    private function getControllerClass($file)
+    {
+        $namespace = RouterConfig::get('namespace_controllers');
+        $class = "{$namespace}\\" . explode('.', $file)[0];
+
+        return $class;
     }
 }
