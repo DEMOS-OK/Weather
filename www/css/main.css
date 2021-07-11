@@ -1,0 +1,11 @@
+/**
+ * Главный CSS
+ */
+
+.navbar {
+    border-bottom: 1px solid lightgray;
+}
+
+.hidden {
+    display: none;
+}

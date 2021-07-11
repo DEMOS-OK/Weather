@@ -13,6 +13,6 @@ class ErrorController extends Controller
      */
     public function pageNotFound()
     {
-        view('404');
+        $this->loadInSection('404');
     }
 }

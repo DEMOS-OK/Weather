@@ -13,6 +13,7 @@ class IndexController extends Controller
      */
     public function index()
     {
-        view('index');
+        $this->loadInSection('index');
     }
+
 }
